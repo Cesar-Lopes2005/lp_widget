@@ -31,6 +31,7 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
   const [isTyping, setIsTyping] = useState(false);
   const [sessionId] = useState(() => `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const quickQuestions = [
     "Quanto custa o Agente SDR?",
@@ -60,6 +61,13 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [inputValue]);
 
   const handleSendMessage = async (message?: string) => {
     const messageText = message || inputValue.trim();
@@ -102,17 +110,30 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
           data = { response: responseText };
         }
 
-        const botMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          text: data.output?.response || data.response || data.output || responseText || getDefaultResponse(messageText),
-          sender: 'bot',
-          timestamp: new Date()
-        };
+        const fullResponse = data.output?.response || data.response || data.output || responseText || getDefaultResponse(messageText);
 
-        setTimeout(() => {
-          setMessages(prev => [...prev, botMessage]);
-          setIsTyping(false);
-        }, 1500);
+        // Divide a resposta em múltiplas mensagens quando houver \n\n
+        const messageParts = fullResponse
+          .split('\n\n')
+          .map((part: string) => part.trim())
+          .filter((part: string) => part.length > 0);
+
+        // Adiciona as mensagens sequencialmente com delay entre elas
+        messageParts.forEach((part: string, index: number) => {
+          const botMessage: Message = {
+            id: `${Date.now() + index + 1}`,
+            text: part,
+            sender: 'bot',
+            timestamp: new Date(Date.now() + index * 100)
+          };
+
+          setTimeout(() => {
+            setMessages(prev => [...prev, botMessage]);
+            if (index === messageParts.length - 1) {
+              setIsTyping(false);
+            }
+          }, 1500 + (index * 800));
+        });
       } else {
         const errorText = await response.text();
         console.error('Response not ok:', response.status, response.statusText);
@@ -317,20 +338,27 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
 
       {/* Input */}
       <div className="p-4 border-t border-gray-200">
-        <div className="flex space-x-2">
-          <Input
+        <div className="flex items-end space-x-2">
+          <textarea
+            ref={textareaRef}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSendMessage();
+              }
+            }}
             placeholder="Digite sua mensagem..."
             disabled={isTyping}
-            className="flex-1"
+            rows={1}
+            className="flex-1 resize-none rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 max-h-32 overflow-y-auto"
           />
           <Button
             onClick={() => handleSendMessage()}
             disabled={!inputValue.trim() || isTyping}
             size="sm"
-            className="px-3"
+            className="px-3 mb-0.5"
           >
             <Send className="w-4 h-4" />
           </Button>
