@@ -1,14 +1,16 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { 
-  Check, 
-  Star, 
-  Bot, 
-  MessageSquare, 
-  BarChart3, 
-  Headphones, 
-  Shield, 
-  Zap 
+import {
+  Check,
+  Star,
+  Bot,
+  MessageSquare,
+  BarChart3,
+  Headphones,
+  Shield,
+  Zap,
+  Target,
+  Users
 } from 'lucide-react';
 
 interface CTPricingProps {
@@ -16,60 +18,92 @@ interface CTPricingProps {
 }
 
 export const CTPricing: React.FC<CTPricingProps> = ({ onChatOpen }) => {
-  const plans = [
+  const agents = [
     {
-      name: 'Starter',
-      price: 297,
-      period: '/mês',
-      description: 'Ideal para pequenas empresas começando com automação',
-      features: [
-        '1 Agente de IA',
-        'WhatsApp OU Instagram',
-        'Até 1.000 conversas/mês',
-        '1 integração CRM',
-        'Relatórios básicos',
-        'Suporte por email'
+      id: 'sdr',
+      name: 'Agente SDR',
+      icon: Target,
+      setup: 1000,
+      monthly: 500,
+      description: 'Automatize prospecção e qualificação de leads',
+      setupIncludes: [
+        'Integração WhatsApp Business',
+        '1 CRM (Pipedrive, HubSpot ou RD)',
+        'Configuração completa do agente',
+        'Treinamento personalizado da IA',
+        'Onboarding com a equipe'
       ],
-      highlighted: false,
-      cta: 'Começar Agora'
-    },
-    {
-      name: 'Pro',
-      price: 697,
-      period: '/mês',
-      description: 'Solução completa para empresas em crescimento',
-      features: [
-        '2 Agentes de IA',
-        'WhatsApp + Instagram',
-        'Até 5.000 conversas/mês',
-        '3 integrações CRM',
-        'Automações avançadas',
-        'Relatórios completos',
-        'Suporte prioritário',
-        'Treinamento incluído'
+      monthlyIncludes: [
+        'Conversas ilimitadas ♾️',
+        'Suporte técnico',
+        'Atualizações contínuas',
+        'Relatórios e analytics',
+        'Monitoramento 24/7'
+      ],
+      addOns: [
+        { name: 'Instagram', price: 200 },
+        { name: 'CRM adicional', price: 300 },
+        { name: 'LinkedIn', price: 300 }
       ],
       highlighted: true,
-      cta: 'Mais Popular',
-      badge: 'Mais Popular'
+      badge: '⭐ Mais Vendido',
+      result: '3x mais leads qualificados'
     },
     {
-      name: 'Enterprise',
-      price: 1497,
-      period: '/mês',
-      description: 'Para empresas que precisam de máxima performance',
-      features: [
-        'Agentes ilimitados',
-        'Todas as integrações',
-        'Conversas ilimitadas',
-        'CRMs ilimitados',
-        'Automações personalizadas',
-        'Dashboard executivo',
-        'Suporte 24/7',
-        'Gerente de conta dedicado',
-        'Consultoria estratégica'
+      id: 'farmer',
+      name: 'Agente Farmer',
+      icon: Users,
+      setup: 1500,
+      monthly: 500,
+      description: 'Automatize relacionamento e retenção de clientes',
+      setupIncludes: [
+        'Integração WhatsApp Business',
+        '1 CRM (Pipedrive, HubSpot ou RD)',
+        'Configuração completa do agente',
+        'Treinamento personalizado da IA',
+        'Onboarding com a equipe'
+      ],
+      monthlyIncludes: [
+        'Conversas ilimitadas ♾️',
+        'Suporte técnico',
+        'Atualizações contínuas',
+        'Relatórios e analytics',
+        'Monitoramento 24/7'
+      ],
+      addOns: [
+        { name: 'Instagram', price: 200 },
+        { name: 'CRM adicional', price: 300 },
+        { name: 'Email Marketing', price: 250 }
       ],
       highlighted: false,
-      cta: 'Falar com Vendas'
+      result: '40% aumento na retenção'
+    },
+    {
+      id: 'crm',
+      name: 'CRM Personalizado',
+      icon: BarChart3,
+      setup: null,
+      monthly: null,
+      description: 'CRM sob medida para análise completa dos seus leads',
+      setupIncludes: [
+        'Dashboards personalizados',
+        'Métricas de performance em tempo real',
+        'Funil de vendas visual',
+        'Relatórios automatizados',
+        'Integração total com agentes de IA',
+        'Treinamento da equipe'
+      ],
+      monthlyIncludes: [
+        'Suporte dedicado',
+        'Atualizações e melhorias',
+        'Backup automático',
+        'Segurança avançada'
+      ],
+      addOns: [],
+      highlighted: false,
+      badge: '🆕 Novo',
+      customPricing: true,
+      result: 'Decisões baseadas em dados'
     }
   ];
 
@@ -107,71 +141,138 @@ export const CTPricing: React.FC<CTPricingProps> = ({ onChatOpen }) => {
 
         {/* Pricing Cards */}
         <div className="grid lg:grid-cols-3 gap-8 mb-16">
-          {plans.map((plan, index) => (
-            <div
-              key={index}
-              className={`
-                relative bg-white rounded-2xl border-2 p-8 transition-all duration-300 hover:shadow-xl
-                ${plan.highlighted 
-                  ? 'border-primary shadow-lg scale-105' 
-                  : 'border-gray-200 hover:border-primary/30'
-                }
-              `}
-            >
-              {plan.badge && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <div className="bg-primary text-white px-4 py-2 rounded-full text-sm font-medium flex items-center">
-                    <Star className="w-4 h-4 mr-1" />
-                    {plan.badge}
-                  </div>
-                </div>
-              )}
-
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                  {plan.name}
-                </h3>
-                <p className="text-gray-600 mb-6">
-                  {plan.description}
-                </p>
-                <div className="flex items-baseline justify-center">
-                  <span className="text-4xl font-bold text-gray-900">
-                    R$ {plan.price.toLocaleString()}
-                  </span>
-                  <span className="text-gray-600 ml-1">
-                    {plan.period}
-                  </span>
-                </div>
-              </div>
-
-              <div className="mb-8">
-                <ul className="space-y-4">
-                  {plan.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-start">
-                      <Check className={`
-                        w-5 h-5 mr-3 mt-0.5 flex-shrink-0
-                        ${plan.highlighted ? 'text-primary' : 'text-green-500'}
-                      `} />
-                      <span className="text-gray-700">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <Button
-                onClick={() => onChatOpen(`Gostaria de contratar o plano ${plan.name}`)}
+          {agents.map((agent, index) => {
+            const IconComponent = agent.icon;
+            return (
+              <div
+                key={index}
                 className={`
-                  w-full font-medium py-3
-                  ${plan.highlighted 
-                    ? 'button-primary' 
-                    : 'bg-gray-900 hover:bg-gray-800 text-white'
+                  relative bg-white rounded-2xl border-2 p-8 transition-all duration-300 hover:shadow-xl
+                  ${agent.highlighted
+                    ? 'border-primary shadow-lg scale-105'
+                    : 'border-gray-200 hover:border-primary/30'
                   }
                 `}
               >
-                {plan.cta}
-              </Button>
-            </div>
-          ))}
+                {agent.badge && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <div className="bg-primary text-white px-4 py-2 rounded-full text-sm font-medium">
+                      {agent.badge}
+                    </div>
+                  </div>
+                )}
+
+                <div className="text-center mb-6">
+                  <div className={`
+                    w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4
+                    ${agent.highlighted ? 'bg-primary text-white' : 'bg-primary/10 text-primary'}
+                  `}>
+                    <IconComponent className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                    {agent.name}
+                  </h3>
+                  <p className="text-gray-600 mb-6">
+                    {agent.description}
+                  </p>
+
+                  {agent.customPricing ? (
+                    <div className="py-4">
+                      <div className="text-2xl font-bold text-gray-900">
+                        Valor sob consulta
+                      </div>
+                      <div className="text-sm text-gray-600 mt-2">
+                        Orçamento personalizado
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="mb-3">
+                        <div className="text-sm text-gray-600 mb-1">Setup (uma vez)</div>
+                        <div className="text-3xl font-bold text-gray-900">
+                          R$ {agent.setup?.toLocaleString()}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-sm text-gray-600 mb-1">Recorrência mensal</div>
+                        <div className="text-3xl font-bold text-primary">
+                          R$ {agent.monthly?.toLocaleString()}/mês
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                {/* Resultado */}
+                <div className="mb-6 p-4 bg-green-50 rounded-xl border border-green-200">
+                  <div className="text-sm font-medium text-green-800 mb-1">
+                    Resultado:
+                  </div>
+                  <div className="text-lg font-bold text-green-900">
+                    {agent.result}
+                  </div>
+                </div>
+
+                {/* Incluído no Setup */}
+                <div className="mb-6">
+                  <h4 className="font-semibold text-gray-900 mb-3">✓ Incluído no Setup:</h4>
+                  <ul className="space-y-2">
+                    {agent.setupIncludes.map((item, idx) => (
+                      <li key={idx} className="flex items-start text-sm">
+                        <div className="w-1.5 h-1.5 bg-primary rounded-full mt-1.5 mr-2 flex-shrink-0" />
+                        <span className="text-gray-700">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Recorrência Mensal */}
+                <div className="mb-6">
+                  <h4 className="font-semibold text-gray-900 mb-3">✓ Recorrência mensal:</h4>
+                  <ul className="space-y-2">
+                    {agent.monthlyIncludes.map((item, idx) => (
+                      <li key={idx} className="flex items-start text-sm">
+                        <div className="w-1.5 h-1.5 bg-primary rounded-full mt-1.5 mr-2 flex-shrink-0" />
+                        <span className="text-gray-700">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Add-ons */}
+                {agent.addOns && agent.addOns.length > 0 && (
+                  <div className="mb-6 p-4 bg-gray-50 rounded-xl">
+                    <h4 className="font-semibold text-gray-900 mb-3">💎 Add-ons Opcionais:</h4>
+                    <ul className="space-y-2">
+                      {agent.addOns.map((addon, idx) => (
+                        <li key={idx} className="flex items-center justify-between text-sm">
+                          <span className="text-gray-700">{addon.name}</span>
+                          <span className="font-medium text-gray-900">+R$ {addon.price}/mês</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <Button
+                  onClick={() => onChatOpen(
+                    agent.customPricing
+                      ? `Gostaria de um orçamento para ${agent.name}`
+                      : `Gostaria de contratar o ${agent.name}`
+                  )}
+                  className={`
+                    w-full font-medium py-3
+                    ${agent.highlighted
+                      ? 'button-primary'
+                      : 'bg-gray-900 hover:bg-gray-800 text-white'
+                    }
+                  `}
+                >
+                  {agent.customPricing ? 'Solicitar Orçamento' : 'Começar Agora'}
+                </Button>
+              </div>
+            );
+          })}
         </div>
 
         {/* Guarantees */}

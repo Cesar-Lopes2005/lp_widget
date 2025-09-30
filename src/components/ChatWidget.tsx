@@ -33,10 +33,10 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const quickQuestions = [
-    "Posso integrar esse agente ao meu WhatsApp?",
-    "Qual a diferença disso pra um chatbot normal?",
-    "Quero agendar uma reunião",
-    "Quais são os preços?"
+    "Quanto custa o Agente SDR?",
+    "Qual a diferença entre SDR e Farmer?",
+    "Quero agendar uma demonstração",
+    "Como funciona o CRM personalizado?"
   ];
 
   useEffect(() => {
@@ -138,25 +138,41 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
 
   const getDefaultResponse = (message: string): string => {
     const lowerMessage = message.toLowerCase();
-    
+
     console.log('Using fallback response for message:', message);
-    
+
     if (lowerMessage.includes('reunião') || lowerMessage.includes('agendar') || lowerMessage.includes('demonstração')) {
       return 'Perfeito! Vou conectar você com nossa equipe para agendar uma demonstração personalizada. Clique no botão do WhatsApp abaixo para continuar! 🗓️';
     }
-    
+
     if (lowerMessage.includes('preço') || lowerMessage.includes('custo') || lowerMessage.includes('valor') || lowerMessage.includes('plano')) {
-      return 'Nossos planos começam em R$ 297/mês no plano Starter. Temos também o Pro (R$ 697/mês) e Enterprise (R$ 1.497/mês). Todos incluem 7 dias de teste grátis! 💰';
+      return 'Nosso Agente SDR tem setup de R$ 1.000 + R$ 500/mês (conversas ilimitadas, WhatsApp e 1 CRM incluídos). O Agente Farmer é R$ 1.500 de setup + R$ 500/mês. Todos incluem 7 dias de teste grátis! 💰';
     }
-    
+
+    if (lowerMessage.includes('sdr')) {
+      return 'Nosso Agente SDR é perfeito para prospecção! Setup de R$ 1.000 + R$ 500/mês com conversas ilimitadas, WhatsApp e CRM incluídos. Triplique seus leads qualificados! 🎯';
+    }
+
+    if (lowerMessage.includes('farmer')) {
+      return 'O Agente Farmer é ideal para retenção de clientes! Setup de R$ 1.500 + R$ 500/mês com conversas ilimitadas, WhatsApp e CRM incluídos. Aumente 40% na retenção! 👥';
+    }
+
+    if (lowerMessage.includes('crm')) {
+      return 'Oferecemos CRM personalizado com dashboards sob medida para análise completa dos seus leads! Valor sob consulta. Quer saber mais? 📊';
+    }
+
     if (lowerMessage.includes('whatsapp') || lowerMessage.includes('integra')) {
-      return 'Sim! Integramos perfeitamente com WhatsApp Business e mais de 50 outras ferramentas. Nossos agentes funcionam 24/7 com respostas naturais e inteligentes! 📱';
+      return 'Sim! WhatsApp Business está incluído no setup. Também integramos com CRMs (Pipedrive, HubSpot, RD Station) e mais de 50 outras ferramentas! 📱';
     }
-    
+
     if (lowerMessage.includes('diferença') || lowerMessage.includes('chatbot')) {
       return 'Nossos agentes usam IA avançada para conversas naturais, aprendem com cada interação e se integram ao seu CRM. Muito além de um chatbot tradicional! 🤖✨';
     }
-    
+
+    if (lowerMessage.includes('conversa') || lowerMessage.includes('limite')) {
+      return 'Nossos agentes têm conversas ILIMITADAS! ♾️ Você paga um valor fixo mensal sem surpresas na fatura. Converse o quanto precisar! 🚀';
+    }
+
     return 'Entendi! Nossa equipe pode te ajudar melhor com essa questão. Que tal continuar a conversa pelo WhatsApp para um atendimento mais detalhado? 😊';
   };
 

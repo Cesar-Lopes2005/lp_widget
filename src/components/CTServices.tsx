@@ -1,14 +1,15 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { 
-  Users, 
-  Target, 
-  Settings, 
-  MessageSquare, 
-  TrendingUp, 
-  Clock, 
+import {
+  Users,
+  Target,
+  Settings,
+  MessageSquare,
+  TrendingUp,
+  Clock,
   Bot,
-  Star
+  Star,
+  BarChart3
 } from 'lucide-react';
 
 interface CTServicesProps {
@@ -18,35 +19,55 @@ interface CTServicesProps {
 export const CTServices: React.FC<CTServicesProps> = ({ onChatOpen }) => {
   const services = [
     {
+      id: 'sdr',
+      icon: Target,
+      title: 'Agente SDR',
+      subtitle: 'Nosso Carro-Chefe',
+      description: 'Automatização de prospecção e qualificação de leads',
+      benefits: [
+        'Prospecção automática',
+        'Qualificação inteligente de leads',
+        'Agendamento de reuniões',
+        'Integração com WhatsApp e CRM',
+        'Relatórios de performance'
+      ],
+      result: '3x mais leads qualificados',
+      integrations: 'WhatsApp, 1 CRM incluído',
+      featured: true
+    },
+    {
       id: 'farmer',
       icon: Users,
       title: 'Agente Farmer',
-      subtitle: 'Produto Destaque',
+      subtitle: 'Retenção de Clientes',
       description: 'Automatização de relacionamento com clientes existentes',
       benefits: [
         'Follow-up automático de vendas',
         'Reativação de leads dormentes',
         'Nutrição de relacionamento',
-        'Integração com CRM'
+        'Integração com WhatsApp e CRM',
+        'Análise de satisfação'
       ],
       result: '40% aumento na retenção de clientes',
-      integrations: 'WhatsApp, Instagram, CRMs',
-      featured: true
+      integrations: 'WhatsApp, 1 CRM incluído',
+      featured: false
     },
     {
-      id: 'sdr',
-      icon: Target,
-      title: 'Agente SDR',
-      subtitle: 'Prospecção Inteligente',
-      description: 'Automatização de prospecção e qualificação de leads',
+      id: 'crm',
+      icon: BarChart3,
+      title: 'CRM Personalizado',
+      subtitle: 'Análise de Dados',
+      description: 'CRM sob medida para análise completa dos seus leads',
       benefits: [
-        'Prospecção automática',
-        'Qualificação de leads',
-        'Agendamento de reuniões',
-        'Relatórios de performance'
+        'Dashboards personalizados',
+        'Métricas de performance em tempo real',
+        'Funil de vendas visual',
+        'Relatórios automatizados',
+        'Integração total com agentes'
       ],
-      result: '3x mais leads qualificados',
-      integrations: 'LinkedIn, Email, CRMs'
+      result: 'Decisões baseadas em dados',
+      integrations: 'Integra com todos nossos agentes',
+      featured: false
     },
     {
       id: 'custom',
@@ -61,7 +82,8 @@ export const CTServices: React.FC<CTServicesProps> = ({ onChatOpen }) => {
         'Notificações inteligentes'
       ],
       result: 'Economia de 20h/semana',
-      integrations: 'Google Workspace, ClickUp, Zapier'
+      integrations: 'Google Workspace, ClickUp, Zapier',
+      featured: false
     }
   ];
 
@@ -113,7 +135,7 @@ export const CTServices: React.FC<CTServicesProps> = ({ onChatOpen }) => {
         </div>
 
         {/* Main Services */}
-        <div className="grid lg:grid-cols-3 gap-8 mb-20">
+        <div className="grid lg:grid-cols-2 xl:grid-cols-4 gap-8 mb-20">
           {services.map((service) => {
             const IconComponent = service.icon;
             return (

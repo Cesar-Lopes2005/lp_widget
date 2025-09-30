@@ -34,18 +34,18 @@ export const CTHero: React.FC<CTHeroProps> = ({ onChatOpen }) => {
 
           {/* Main Headline */}
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-gray-900 mb-6 leading-tight">
-            Transforme seu
+            Triplique seus
             <span className="text-primary block">
-              Atendimento e Vendas
+              Leads Qualificados
             </span>
-            com Agentes de IA
+            com Agente SDR de IA
           </h1>
 
           {/* Subtitle */}
           <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
-            Automatize relacionamento com clientes, prospecção e processos internos. 
-            <strong className="text-gray-900"> Aumente 40% na retenção</strong> e 
-            <strong className="text-gray-900"> triplique seus leads qualificados</strong>.
+            Automatize sua prospecção, qualificação e agendamento de reuniões.
+            <strong className="text-gray-900"> Triplique seus leads qualificados</strong> e
+            <strong className="text-gray-900"> aumente 40% na retenção</strong> com nossos agentes de IA.
           </p>
 
           {/* CTAs */}
