@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Users,
   Target,
@@ -9,7 +10,8 @@ import {
   Clock,
   Bot,
   Star,
-  BarChart3
+  BarChart3,
+  Check
 } from 'lucide-react';
 
 interface CTServicesProps {
@@ -134,88 +136,154 @@ export const CTServices: React.FC<CTServicesProps> = ({ onChatOpen }) => {
           </p>
         </div>
 
-        {/* Main Services */}
-        <div className="grid lg:grid-cols-2 xl:grid-cols-4 gap-8 mb-20">
+        {/* Main Services - Tabs */}
+        <Tabs defaultValue="sdr" className="mb-20">
+          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 h-auto mb-8 bg-gray-100 p-2 rounded-xl">
+            {services.map((service) => {
+              const IconComponent = service.icon;
+              return (
+                <TabsTrigger
+                  key={service.id}
+                  value={service.id}
+                  className="flex flex-col items-center gap-2 py-4 px-3 data-[state=active]:bg-white data-[state=active]:shadow-md rounded-lg transition-all"
+                >
+                  <div className={`
+                    w-12 h-12 rounded-xl flex items-center justify-center transition-colors
+                    ${service.featured ? 'bg-primary/10 text-primary' : 'bg-gray-200 text-gray-600'}
+                  `}>
+                    <IconComponent className="w-6 h-6" />
+                  </div>
+                  <div className="text-center">
+                    <div className="font-semibold text-sm">{service.title}</div>
+                    {service.featured && (
+                      <div className="text-xs text-primary flex items-center justify-center gap-1 mt-1">
+                        <Star className="w-3 h-3" />
+                        Popular
+                      </div>
+                    )}
+                  </div>
+                </TabsTrigger>
+              );
+            })}
+          </TabsList>
+
           {services.map((service) => {
             const IconComponent = service.icon;
             return (
-              <div
-                key={service.id}
-                className={`
-                  relative bg-white rounded-2xl p-8 shadow-lg border-2 transition-all duration-300 hover:shadow-xl hover:-translate-y-2
-                  ${service.featured ? 'border-primary' : 'border-gray-200'}
-                `}
-              >
-                {service.featured && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <div className="bg-primary text-white px-4 py-2 rounded-full text-sm font-medium flex items-center">
-                      <Star className="w-4 h-4 mr-1" />
-                      Mais Popular
+              <TabsContent key={service.id} value={service.id} className="mt-0">
+                <div className="bg-white rounded-2xl shadow-xl border-2 border-gray-200 overflow-hidden">
+                  {/* Header com gradient */}
+                  <div className={`
+                    p-8 bg-gradient-to-br
+                    ${service.featured
+                      ? 'from-primary/10 via-primary/5 to-transparent'
+                      : 'from-gray-50 to-white'
+                    }
+                  `}>
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-4">
+                        <div className={`
+                          w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg
+                          ${service.featured ? 'bg-primary text-white' : 'bg-white text-primary border-2 border-primary'}
+                        `}>
+                          <IconComponent className="w-10 h-10" />
+                        </div>
+                        <div>
+                          <h3 className="text-3xl font-bold text-gray-900 mb-1">
+                            {service.title}
+                          </h3>
+                          <p className="text-lg text-primary font-semibold">
+                            {service.subtitle}
+                          </p>
+                        </div>
+                      </div>
+                      {service.featured && (
+                        <div className="bg-primary text-white px-4 py-2 rounded-full text-sm font-medium flex items-center shadow-lg">
+                          <Star className="w-4 h-4 mr-1" />
+                          Mais Popular
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-lg text-gray-600 max-w-3xl">
+                      {service.description}
+                    </p>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-8 grid md:grid-cols-2 gap-8">
+                    {/* Coluna Esquerda - Benefícios */}
+                    <div>
+                      <h4 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
+                        <Check className="w-6 h-6 text-primary mr-2" />
+                        Benefícios Principais
+                      </h4>
+                      <ul className="space-y-4">
+                        {service.benefits.map((benefit, index) => (
+                          <li key={index} className="flex items-start group">
+                            <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5 mr-3 flex-shrink-0 group-hover:bg-primary transition-colors">
+                              <Check className="w-4 h-4 text-primary group-hover:text-white" />
+                            </div>
+                            <span className="text-gray-700 text-base leading-relaxed">{benefit}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Coluna Direita - Resultado e Integrações */}
+                    <div className="space-y-6">
+                      {/* Resultado */}
+                      <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border-2 border-green-200 shadow-sm">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
+                            <TrendingUp className="w-6 h-6 text-white" />
+                          </div>
+                          <div>
+                            <div className="text-sm font-medium text-green-800">
+                              Resultado Comprovado
+                            </div>
+                            <div className="text-2xl font-bold text-green-900">
+                              {service.result}
+                            </div>
+                          </div>
+                        </div>
+                        <p className="text-sm text-green-700">
+                          Baseado em resultados reais de nossos clientes
+                        </p>
+                      </div>
+
+                      {/* Integrações */}
+                      <div className="bg-gray-50 rounded-2xl p-6 border-2 border-gray-200">
+                        <div className="flex items-center gap-2 mb-3">
+                          <Settings className="w-5 h-5 text-primary" />
+                          <h5 className="font-semibold text-gray-900">
+                            Integrações Incluídas
+                          </h5>
+                        </div>
+                        <p className="text-gray-700 font-medium">
+                          {service.integrations}
+                        </p>
+                      </div>
+
+                      {/* CTA Button */}
+                      <Button
+                        onClick={() => onChatOpen(`Gostaria de saber mais sobre o ${service.title}`)}
+                        className={`
+                          w-full font-semibold text-lg py-6 rounded-xl shadow-lg
+                          ${service.featured
+                            ? 'button-primary'
+                            : 'bg-gray-900 hover:bg-gray-800 text-white'
+                          }
+                        `}
+                      >
+                        {service.id === 'crm' ? 'Solicitar Orçamento' : 'Começar Agora'}
+                      </Button>
                     </div>
                   </div>
-                )}
-
-                <div className="mb-6">
-                  <div className={`
-                    w-16 h-16 rounded-2xl flex items-center justify-center mb-4
-                    ${service.featured ? 'bg-primary text-white' : 'bg-primary/10 text-primary'}
-                  `}>
-                    <IconComponent className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                    {service.title}
-                  </h3>
-                  <p className="text-primary font-medium mb-3">
-                    {service.subtitle}
-                  </p>
-                  <p className="text-gray-600">
-                    {service.description}
-                  </p>
                 </div>
-
-                <div className="mb-6">
-                  <h4 className="font-semibold text-gray-900 mb-3">Benefícios:</h4>
-                  <ul className="space-y-2">
-                    {service.benefits.map((benefit, index) => (
-                      <li key={index} className="flex items-start">
-                        <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0" />
-                        <span className="text-sm text-gray-600">{benefit}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="mb-6 p-4 bg-green-50 rounded-xl border border-green-200">
-                  <div className="text-sm font-medium text-green-800 mb-1">
-                    Resultado:
-                  </div>
-                  <div className="text-lg font-bold text-green-900">
-                    {service.result}
-                  </div>
-                </div>
-
-                <div className="mb-6">
-                  <div className="text-sm font-medium text-gray-700 mb-1">
-                    Integrações:
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    {service.integrations}
-                  </div>
-                </div>
-
-                <Button 
-                  onClick={() => onChatOpen(`Gostaria de saber mais sobre o ${service.title}`)}
-                  className={`
-                    w-full font-medium
-                    ${service.featured ? 'button-primary' : 'bg-gray-900 hover:bg-gray-800 text-white'}
-                  `}
-                >
-                  Saiba Mais
-                </Button>
-              </div>
+              </TabsContent>
             );
           })}
-        </div>
+        </Tabs>
 
         {/* Features Grid */}
         <div className="mb-16">
